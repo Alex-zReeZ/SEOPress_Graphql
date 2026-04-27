@@ -15,20 +15,27 @@ class SEOPress_GraphQL {
      */
     public static function init(): void {
         $instance = new self();
-        add_action( 'graphql_register_types', [ $instance, 'register_types' ] );
+        add_action( 'graphql_register_types', [ $instance, 'register_types' ], 10, 0 );
     }
 
     /**
      * Register all custom GraphQL types and fields.
+     *
+     * IMPORTANT: sub-types must be registered BEFORE the parent type (SEOPressSEO)
+     * that references them, otherwise WPGraphQL cannot resolve the type references
+     * when building the schema for introspection / autocomplete.
      */
     public function register_types(): void {
-        $this->register_seo_type();
+        // 1. Leaf / sub-types first.
         $this->register_og_type();
         $this->register_twitter_type();
         $this->register_robots_type();
         $this->register_schema_type();
         $this->register_breadcrumb_types();
         $this->register_redirect_type();
+
+        // 2. Root SEO type last (references all sub-types above).
+        $this->register_seo_type();
 
         // Attach `seo` field to every WPGraphQL post type.
         $this->attach_to_post_types();

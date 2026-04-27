@@ -18,6 +18,18 @@ define( 'SEOPRESS_GRAPHQL_DIR', plugin_dir_path( __FILE__ ) );
 define( 'SEOPRESS_GRAPHQL_URL', plugin_dir_url( __FILE__ ) );
 
 /**
+ * Flush WPGraphQL's persisted schema cache on activation so the new types
+ * appear immediately in GraphiQL autocomplete.
+ */
+register_activation_hook( __FILE__, function () {
+    if ( function_exists( 'WPGraphQL\clear_schema' ) ) {
+        \WPGraphQL\clear_schema();
+    }
+    // WPGraphQL 1.x stores the schema in a transient.
+    delete_transient( 'wpgraphql_schema' );
+} );
+
+/**
  * Check that both SEOPress and WPGraphQL are active before loading.
  */
 add_action( 'plugins_loaded', function () {
