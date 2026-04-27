@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: SEOPress WPGraphQL
- * Plugin URI:  https://github.com/your-repo/seopress-graphql
+ * Plugin URI:  https://github.com/Alex-zReeZ/SEOPress_Graphql
  * Description: Expose SEOPress SEO fields in the WPGraphQL API. Supports titles, meta descriptions, Open Graph, Twitter Card, robots, canonical, schema, breadcrumbs, and more.
  * Version:     1.0.0
  * Author:      Alex Beck
